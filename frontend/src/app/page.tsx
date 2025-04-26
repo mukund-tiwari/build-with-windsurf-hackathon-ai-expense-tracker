@@ -92,38 +92,34 @@ export default function Home() {
       {/* Header */}
       <header className="w-full max-w-md text-center mb-4">
         <h1 className="text-3xl font-extrabold text-gray-900">AI Expense Tracker</h1>
-        <p className="mt-2 text-gray-600">
+        <p className="mt-2 text-gray-700">
           Log expenses and get instant insights—all in natural language.
         </p>
       </header>
       {/* Chat Window */}
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-4 flex-1 flex flex-col">
         <div id="chat-container" className="flex-1 overflow-y-auto mb-4">
-        {messages.map((m, i) => (
-          <div
-            key={i}
-            className={`mb-2 ${
-              m.role === 'user'
-                ? 'text-right'
-                : m.role === 'assistant'
-                ? 'text-left'
-                : 'text-center italic text-gray-500'
-            }`}
-          >
-            <span
-              className={`inline-block px-3 py-1 rounded-md ${
-                m.role === 'user'
-                  ? 'bg-blue-500 text-white'
-                  : m.role === 'assistant'
-                  ? 'bg-gray-200 text-black'
-                  : ''
-              }`}
-            >
-              {m.content}
-            </span>
-          </div>
-        ))}
-      </div>
+          {messages.map((m, i) => {
+            // Determine container alignment and bubble styles
+            let containerClasses = 'mb-2 flex ';
+            let bubbleClasses = 'inline-block px-4 py-2 rounded-lg ';
+            if (m.role === 'user') {
+              containerClasses += 'justify-end';
+              bubbleClasses += 'bg-blue-500 text-white';
+            } else if (m.role === 'assistant') {
+              containerClasses += 'justify-start';
+              bubbleClasses += 'bg-gray-200 text-gray-900';
+            } else {
+              containerClasses += 'justify-center';
+              bubbleClasses += 'bg-gray-100 text-gray-700 italic';
+            }
+            return (
+              <div key={i} className={containerClasses}>
+                <span className={bubbleClasses}>{m.content}</span>
+              </div>
+            );
+          })}
+        </div>
         <div className="flex items-center">
           <textarea
             className="flex-1 border border-gray-300 rounded-md p-2 mr-2 focus:ring-2 focus:ring-blue-500"
@@ -145,6 +141,7 @@ export default function Home() {
             Send
           </button>
         </div>
+      </div>
     </div>
   );
 }
