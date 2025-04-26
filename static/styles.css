@@ -1,0 +1,66 @@
+/* Simple styling for AI Expense Tracker */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+}
+#chat-window {
+    background: #fff;
+    margin: 20px auto;
+    padding: 10px;
+    width: 80%;
+    max-width: 600px;
+    height: 400px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow-y: auto;
+}
+.message {
+    margin: 5px 0;
+    padding: 8px 12px;
+    border-radius: 20px;
+    max-width: 70%;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+.message.user {
+    background-color: #007bff;
+    color: #fff;
+    margin-left: auto;
+    text-align: right;
+}
+.message.assistant {
+    background-color: #e4e6eb;
+    color: #000;
+    margin-right: auto;
+    text-align: left;
+}
+.message.status {
+    background-color: transparent;
+    color: #666;
+    font-style: italic;
+    text-align: center;
+}
+#chat-input {
+    width: 70%;
+    max-width: 500px;
+    padding: 10px;
+    margin: 20px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+#chat-send {
+    padding: 10px 20px;
+    margin: 20px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#chat-send:hover {
+    background-color: #0056b3;
+}

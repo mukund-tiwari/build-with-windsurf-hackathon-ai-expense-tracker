@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (data.action === 'parse_expense' && data.expense) {
         const e = data.expense;
         appendMessage('assistant',
-          `Expense recorded: $${e.amount} on ${e.timestamp} for ${e.description}` +
+          `Expense recorded: ₹${e.amount} on ${e.timestamp} for ${e.description}` +
           (e.category ? ` (category: ${e.category})` : '')
         );
       } else if (data.action === 'query_expenses' && data.expenses) {
@@ -46,18 +46,18 @@ document.addEventListener('DOMContentLoaded', () => {
           appendMessage('assistant', 'Expenses:');
           data.expenses.forEach(e => {
             appendMessage('assistant',
-              `- $${e.amount} on ${e.timestamp}: ${e.description}` +
+              `- ₹${e.amount} on ${e.timestamp}: ${e.description}` +
               (e.category ? ` (cat: ${e.category})` : '')
             );
           });
         }
       } else if (data.action === 'summarize_expenses' && data.summary) {
         const s = data.summary;
-        appendMessage('assistant', `Total: $${s.total}`);
+        appendMessage('assistant', `Total: ₹${s.total}`);
         if (s.breakdown && s.breakdown.length) {
           appendMessage('assistant', 'Breakdown:');
           s.breakdown.forEach(b => {
-            appendMessage('assistant', `- ${b.period}: $${b.total}`);
+            appendMessage('assistant', `- ${b.period}: ₹${b.total}`);
           });
         }
       } else if (data.response) {
