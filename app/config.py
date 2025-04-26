@@ -9,4 +9,4 @@ load_dotenv(dotenv_path=env_path)
 # OpenAI API key for AI features
 OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
 # OpenAI model to use for API calls
-OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo-0613")
+OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo")

@@ -21,7 +21,7 @@ Next, set up your environment variables:
 ```bash
 cp .env.example .env
 # Edit .env and set OPENAI_API_KEY in the new file
-# Optionally, adjust OPENAI_MODEL (default gpt-3.5-turbo-0613) to manage cost/quality
+# Optionally, adjust OPENAI_MODEL (default gpt-3.5-turbo) to manage cost/quality
 ```
 
 To start the development server:
