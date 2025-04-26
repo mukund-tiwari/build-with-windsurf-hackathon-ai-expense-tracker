@@ -1,14 +1,16 @@
 {
   "services": [
     {
-      "name": "backend",
+      "service": "backend",
       "path": "app",
-      "start": "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+      "build": "pip install -r ../requirements.txt",
+      "start": "uvicorn main:app --host 0.0.0.0 --port $PORT"
     },
     {
-      "name": "frontend",
+      "service": "frontend",
       "path": "frontend",
-      "start": "npm install && npm run build && npm run start -- --port $PORT"
+      "build": "npm install && npm run build",
+      "start": "npm run start -- --port $PORT"
     }
   ]
 }
