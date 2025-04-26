@@ -2,5 +2,6 @@ fastapi
 uvicorn[standard]
 sqlmodel
 python-dotenv
-openai
+openai==0.28.0  # pin to older version for ChatCompletion compatibility
 jinja2
+pytest
