@@ -16,6 +16,13 @@ conda activate build-with-windsurf-hackathon-ai-expense-tracker
 
 Once activated, the required dependencies (from `requirements.txt`) are installed automatically.
 
+Next, set up your environment variables:
+
+```bash
+cp .env.example .env
+# Edit .env and set OPENAI_API_KEY in the new file
+```
+
 To start the development server:
 ```bash
 uvicorn app.main:app --reload
