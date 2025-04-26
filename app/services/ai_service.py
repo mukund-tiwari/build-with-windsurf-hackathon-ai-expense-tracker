@@ -1,7 +1,7 @@
 import json
 import openai
 
-from app.config import OPENAI_API_KEY
+from app.config import OPENAI_API_KEY, OPENAI_MODEL
 
 # Load OpenAI API key
 openai.api_key = OPENAI_API_KEY
@@ -97,7 +97,7 @@ def call_openai(user_input: str) -> dict:
         "Decide whether to call one of the available functions to parse, query, or summarize expenses."
     )
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-0613",
+        model=OPENAI_MODEL,
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_input},
