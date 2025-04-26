@@ -1,0 +1,9 @@
+name: build-with-windsurf-hackathon-ai-expense-tracker
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+      # Install project Python dependencies
+      - -r requirements.txt
