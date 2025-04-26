@@ -7,21 +7,11 @@
 </head>
 <body>
     <h1>AI Expense Tracker</h1>
-    <section>
-        <h2>Add Expense</h2>
-        <textarea id="expense-text" rows="2" cols="60" placeholder="e.g., Bought coffee for $4 at Starbucks on 2025-04-20"></textarea><br>
-        <button id="expense-submit">Add Expense</button>
-        <h3>Result:</h3>
-        <pre id="expense-result"></pre>
-    </section>
-    <hr>
-    <section>
-        <h2>Ask AI</h2>
-        <textarea id="ask-text" rows="2" cols="60" placeholder="e.g., How much did I spend on groceries last month?"></textarea><br>
-        <button id="ask-submit">Ask AI</button>
-        <h3>Response:</h3>
-        <pre id="ask-result"></pre>
-    </section>
+    <div id="chat-window" style="border:1px solid #ccc; padding:10px; height:400px; overflow:auto; margin-bottom:10px;"></div>
+    <div>
+        <textarea id="chat-input" rows="2" cols="60" placeholder="Enter expense or ask a question..."></textarea>
+        <button id="chat-send">Send</button>
+    </div>
     <script src="/static/main.js"></script>
 </body>
 </html>

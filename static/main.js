@@ -1,45 +1,23 @@
 // main.js: Handle Add Expense and Ask AI interactions
 document.addEventListener('DOMContentLoaded', () => {
-  // Elements
-  const expText = document.getElementById('expense-text');
-  const expBtn = document.getElementById('expense-submit');
-  const expResult = document.getElementById('expense-result');
+  const chatWindow = document.getElementById('chat-window');
+  const chatInput = document.getElementById('chat-input');
+  const chatSend = document.getElementById('chat-send');
 
-  const askText = document.getElementById('ask-text');
-  const askBtn = document.getElementById('ask-submit');
-  const askResult = document.getElementById('ask-result');
+  function appendMessage(sender, text) {
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('message', sender);
+    msgDiv.textContent = text;
+    chatWindow.appendChild(msgDiv);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
 
-  // Add Expense event
-  expBtn.addEventListener('click', async () => {
-    const text = expText.value.trim();
-    if (!text) {
-      expResult.textContent = 'Please enter some text.';
-      return;
-    }
-    expResult.textContent = 'Submitting...';
-    try {
-      const resp = await fetch('/api/expenses', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text })
-      });
-      const data = await resp.json();
-      if (!resp.ok) throw new Error(data.detail || JSON.stringify(data));
-      expResult.textContent = JSON.stringify(data, null, 2);
-      expText.value = '';
-    } catch (err) {
-      expResult.textContent = 'Error: ' + err.message;
-    }
-  });
-
-  // Ask AI event
-  askBtn.addEventListener('click', async () => {
-    const text = askText.value.trim();
-    if (!text) {
-      askResult.textContent = 'Please enter some text.';
-      return;
-    }
-    askResult.textContent = 'Submitting...';
+  chatSend.addEventListener('click', async () => {
+    const text = chatInput.value.trim();
+    if (!text) return;
+    appendMessage('user', text);
+    chatInput.value = '';
+    appendMessage('status', 'Sending...');
     try {
       const resp = await fetch('/api/ask', {
         method: 'POST',
@@ -47,11 +25,48 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({ text })
       });
       const data = await resp.json();
-      if (!resp.ok) throw new Error(data.detail || JSON.stringify(data));
-      askResult.textContent = JSON.stringify(data, null, 2);
-      askText.value = '';
+      // Remove status message
+      const last = chatWindow.querySelector('.status:last-child');
+      if (last) chatWindow.removeChild(last);
+      if (!resp.ok) {
+        appendMessage('assistant', 'Error: ' + (data.detail || JSON.stringify(data)));
+        return;
+      }
+      // Interpret response
+      if (data.action === 'parse_expense' && data.expense) {
+        const e = data.expense;
+        appendMessage('assistant',
+          `Expense recorded: $${e.amount} on ${e.timestamp} for ${e.description}` +
+          (e.category ? ` (category: ${e.category})` : '')
+        );
+      } else if (data.action === 'query_expenses' && data.expenses) {
+        if (data.expenses.length === 0) {
+          appendMessage('assistant', 'No expenses found for that query.');
+        } else {
+          appendMessage('assistant', 'Expenses:');
+          data.expenses.forEach(e => {
+            appendMessage('assistant',
+              `- $${e.amount} on ${e.timestamp}: ${e.description}` +
+              (e.category ? ` (cat: ${e.category})` : '')
+            );
+          });
+        }
+      } else if (data.action === 'summarize_expenses' && data.summary) {
+        const s = data.summary;
+        appendMessage('assistant', `Total: $${s.total}`);
+        if (s.breakdown && s.breakdown.length) {
+          appendMessage('assistant', 'Breakdown:');
+          s.breakdown.forEach(b => {
+            appendMessage('assistant', `- ${b.period}: $${b.total}`);
+          });
+        }
+      } else if (data.response) {
+        appendMessage('assistant', data.response);
+      } else {
+        appendMessage('assistant', JSON.stringify(data));
+      }
     } catch (err) {
-      askResult.textContent = 'Error: ' + err.message;
+      appendMessage('assistant', 'Error: ' + err.message);
     }
   });
 });
