@@ -7,7 +7,21 @@
 </head>
 <body>
     <h1>AI Expense Tracker</h1>
-    <p>Welcome to your AI-powered expense tracker!</p>
-    <p>Coming soon: enter your expenses in natural language.</p>
+    <section>
+        <h2>Add Expense</h2>
+        <textarea id="expense-text" rows="2" cols="60" placeholder="e.g., Bought coffee for $4 at Starbucks on 2025-04-20"></textarea><br>
+        <button id="expense-submit">Add Expense</button>
+        <h3>Result:</h3>
+        <pre id="expense-result"></pre>
+    </section>
+    <hr>
+    <section>
+        <h2>Ask AI</h2>
+        <textarea id="ask-text" rows="2" cols="60" placeholder="e.g., How much did I spend on groceries last month?"></textarea><br>
+        <button id="ask-submit">Ask AI</button>
+        <h3>Response:</h3>
+        <pre id="ask-result"></pre>
+    </section>
+    <script src="/static/main.js"></script>
 </body>
 </html>
