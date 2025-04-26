@@ -91,8 +91,8 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4">
       {/* Header */}
       <header className="w-full max-w-md text-center mb-4">
-        <h1 className="text-3xl font-extrabold text-gray-900">AI Expense Tracker</h1>
-        <p className="mt-2 text-gray-700">
+        <h1 className="text-3xl font-extrabold text-black">AI Expense Tracker</h1>
+        <p className="mt-2 text-black">
           Log expenses and get instant insights—all in natural language.
         </p>
       </header>
@@ -108,10 +108,10 @@ export default function Home() {
               bubbleClasses += 'bg-blue-500 text-white';
             } else if (m.role === 'assistant') {
               containerClasses += 'justify-start';
-              bubbleClasses += 'bg-gray-200 text-gray-900';
+              bubbleClasses += 'bg-gray-200 text-black';
             } else {
               containerClasses += 'justify-center';
-              bubbleClasses += 'bg-gray-100 text-gray-700 italic';
+              bubbleClasses += 'bg-gray-100 text-black italic';
             }
             return (
               <div key={i} className={containerClasses}>
@@ -122,7 +122,7 @@ export default function Home() {
         </div>
         <div className="flex items-center">
           <textarea
-            className="flex-1 border border-gray-300 rounded-md p-2 mr-2 focus:ring-2 focus:ring-blue-500"
+            className="flex-1 border border-gray-300 rounded-md p-2 mr-2 focus:ring-2 focus:ring-blue-500 placeholder-black"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
