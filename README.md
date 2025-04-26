@@ -27,4 +27,52 @@ cp .env.example .env
 To start the development server:
 ```bash
 uvicorn app.main:app --reload
+
+## API Endpoints
+
+Once the server is running, you can interact with these endpoints:
+
+### Create Expense
+POST /api/expenses
+Request Body (application/json):
+```json
+{ "text": "Bought coffee for $4 at Starbucks on 2025-04-20" }
+```
+Response: JSON of the created expense, e.g.: 
+```json
+{
+  "id": 1,
+  "timestamp": "2025-04-20T00:00:00",
+  "amount": 4.0,
+  "category": "beverage",
+  "description": "coffee at Starbucks",
+  "raw_nl": "Bought coffee for $4 at Starbucks on 2025-04-20"
+}
+```
+
+### List Expenses
+GET /api/expenses
+Optional Query Parameters:
+- `start_date` (YYYY-MM-DD)
+- `end_date` (YYYY-MM-DD)
+- `category` (string)
+
+Example:
+```bash
+curl "http://localhost:8000/api/expenses?start_date=2025-04-01&end_date=2025-04-30&category=food"
+```
+
+### Ask AI for Insights or Queries
+POST /api/ask
+Request Body (application/json):
+```json
+{ "text": "How much did I spend on groceries last month?" }
+```
+Response: Varies based on AI decision. Example:
+```json
+{
+  "action": "summarize_expenses",
+  "summary": { "total": 125.5, "breakdown": [...] }
+}
+```
 ```
