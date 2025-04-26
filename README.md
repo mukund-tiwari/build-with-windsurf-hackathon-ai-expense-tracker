@@ -23,6 +23,25 @@ cp .env.example .env
 # Edit .env and set OPENAI_API_KEY in the new file
 # Optionally, adjust OPENAI_MODEL (default gpt-4.1-nano) to manage cost/quality
 ```
+---
+## Frontend (Next.js)
+
+A modern React/Tailwind frontend has been scaffolded in `frontend/` using Next.js 13.
+
+Setup & Run:
+```bash
+# Start FastAPI backend (port 8000):
+uvicorn app.main:app --reload
+
+# In another terminal, navigate to the frontend and install:
+cd frontend
+npm install
+# (Optional) initialize shadcn-ui components:
+# npm install shadcn && npx shadcn init
+npm run dev
+```
+
+Visit http://localhost:3000 to interact with the chat-style UI. Ensure the backend is reachable at `NEXT_PUBLIC_API_URL` (default http://localhost:8000).
 
 To start the development server:
 ```bash
