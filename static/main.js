@@ -59,6 +59,16 @@ document.addEventListener('DOMContentLoaded', () => {
           s.breakdown.forEach(b => {
             appendMessage('assistant', `- ${b.period}: ₹${b.total}`);
           });
+      } else if (data.action === 'get_last_expense' && data.expense) {
+        const e = data.expense;
+        let msg = `Last expense: ₹${e.amount} on ${e.timestamp} for ${e.description}`;
+        if (e.participants && e.participants.length) {
+          msg += ` (participants: ${e.participants.join(', ')})`;
+        }
+        appendMessage('assistant', msg);
+      } else if (data.action === 'split_expense' && data.split) {
+        const s = data.split;
+        appendMessage('assistant', `Share for ${s.participant}: ₹${s.share.toFixed(2)}`);
         }
       } else if (data.response) {
         appendMessage('assistant', data.response);

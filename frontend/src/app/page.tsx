@@ -9,6 +9,8 @@ interface Message {
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  // Base URL for the backend API; fall back to localhost if not set
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -16,17 +18,17 @@ export default function Home() {
     setMessages((prev) => [...prev, { role: "user", content: textToSend }, { role: "status", content: "Sending..." }]);
     setInput("");
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/ask`, {
+      const res = await fetch(`${apiUrl}/api/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: textToSend }),
       });
       // Attempt to parse JSON; on failure, treat as text (e.g., HTML error page)
+      const textResp = await res.text();
       let data: any;
       try {
-        data = await res.json();
+        data = JSON.parse(textResp);
       } catch (parseErr) {
-        const textResp = await res.text();
         setMessages((prev) => {
           const withoutStatus = prev.filter((m) => m.role !== "status");
           return [...withoutStatus, { role: "assistant", content: textResp }];
@@ -75,6 +77,15 @@ export default function Home() {
               content: `Last expense: ₹${e.amount} on ${e.timestamp} for ${e.description}${parts}`,
             },
           ];
+        } else if (data.action === "get_most_expensive_expense" && data.expense) {
+          const e = data.expense;
+          const parts = e.participants && e.participants.length ? ` (participants: ${e.participants.join(", ")})` : "";
+          newMsgs = [
+            {
+              role: "assistant",
+              content: `Most expensive expense: ₹${e.amount} on ${e.timestamp} for ${e.description}${parts}`,
+            },
+          ];
         } else if (data.action === "split_expense" && data.split) {
           const s = data.split;
           newMsgs = [
@@ -82,6 +93,16 @@ export default function Home() {
               role: "assistant",
               content: `Share for ${s.participant}: ₹${s.share.toFixed(2)}`,
             },
+          ];
+        } else if (data.action === "run_sql" && data.rows) {
+          // Display results of arbitrary SQL query
+          const cols = data.columns as string[];
+          const header = cols.join(" | ");
+          const lines = (data.rows as any[]).map((row) =>
+            cols.map((col) => row[col]).join(" | ")
+          );
+          newMsgs = [
+            { role: "assistant", content: ["Results:", header, ...lines].join("\n") }
           ];
         } else if (data.response) {
           newMsgs = [{ role: "assistant", content: data.response }];
