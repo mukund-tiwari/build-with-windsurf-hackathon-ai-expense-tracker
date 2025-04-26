@@ -21,7 +21,18 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: textToSend }),
       });
-      const data = await res.json();
+      // Attempt to parse JSON; on failure, treat as text (e.g., HTML error page)
+      let data: any;
+      try {
+        data = await res.json();
+      } catch (parseErr) {
+        const textResp = await res.text();
+        setMessages((prev) => {
+          const withoutStatus = prev.filter((m) => m.role !== "status");
+          return [...withoutStatus, { role: "assistant", content: textResp }];
+        });
+        return;
+      }
       setMessages((prev) => {
         const withoutStatus = prev.filter((m) => m.role !== "status");
         let newMsgs: Message[] = [];
@@ -122,7 +133,7 @@ export default function Home() {
         </div>
         <div className="flex items-center">
           <textarea
-            className="flex-1 border border-gray-300 rounded-md p-2 mr-2 focus:ring-2 focus:ring-blue-500 placeholder-black"
+            className="flex-1 border border-gray-300 rounded-md p-2 mr-2 focus:ring-2 focus:ring-blue-500 placeholder-black text-black"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
